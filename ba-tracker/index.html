@@ -106,22 +106,12 @@
     <div class="g2">
       <div class="card">
         <div class="section-title"><span class="dot dot-g"></span>Diese Woche erledigt</div>
-        <ul class="checklist" id="done-list">
-          <li data-state="done"><span class="chk done" onclick="toggleCheck(this)"></span><span contenteditable="true">Erste Quellen gesammelt</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
-          <li data-state="done"><span class="chk done" onclick="toggleCheck(this)"></span><span contenteditable="true">Einleitung begonnen</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
-          <li data-state="done"><span class="chk done" onclick="toggleCheck(this)"></span><span contenteditable="true">Kapitel-Layout & Inhaltsverzeichnis erstellt</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
-          <li data-state="done"><span class="chk done" onclick="toggleCheck(this)"></span><span contenteditable="true">Word-Dokument formatiert</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
-          <li data-state="partial"><span class="chk partial" onclick="toggleCheck(this)"></span><span contenteditable="true">Inhaltsverzeichnis (wird noch überarbeitet)</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
-        </ul>
+        <ul class="checklist" id="done-list"></ul>
         <button class="add-item admin-btn" onclick="addDoneItem()">+ Erledigtes hinzufügen</button>
       </div>
       <div class="card">
         <div class="section-title"><span class="dot dot-b"></span>Nächste Schritte</div>
-        <ul class="steps" id="next-list">
-          <li><span class="snum">01</span><span contenteditable="true">Gliederung mit Sebastian abstimmen</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
-          <li><span class="snum">02</span><span contenteditable="true">Kernliteratur zu adaptivem Audio sichten</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
-          <li><span class="snum">03</span><span contenteditable="true">Wwise-Prototyp: Konzeptarchitektur skizzieren</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
-        </ul>
+        <ul class="steps" id="next-list"></ul>
         <button class="add-item admin-btn" onclick="addNextItem()">+ Schritt hinzufügen</button>
       </div>
     </div>
@@ -129,26 +119,20 @@
     <div class="g2">
       <div class="card">
         <div class="section-title"><span class="dot dot-o"></span>Offene Fragen & Probleme</div>
-        <div id="issues-list">
-          <div class="issue" contenteditable="true">Abgrenzung "öffentlicher Raum" – soziologisch oder architektonisch?</div>
+        <div id="issues-list"></div>
         </div>
         <button class="add-item admin-btn" onclick="addIssue()">+ Frage hinzufügen</button>
       </div>
       <div class="card">
         <div class="section-title"><span class="dot dot-b"></span>Literatur diese Woche</div>
-        <div id="sources-list">
-          <div class="src"><span class="src-n">[1]</span><span contenteditable="true">Collins, K. (2008). Game Sound. MIT Press.</span></div>
-          <div class="src"><span class="src-n">[2]</span><span contenteditable="true">Farnell, A. (2010). Designing Sound. MIT Press.</span></div>
-        </div>
+        <div id="sources-list"></div>
         <button class="add-item admin-btn" onclick="addSource()">+ Quelle hinzufügen</button>
       </div>
     </div>
 
     <div class="card full">
       <div class="section-title"><span class="dot dot-b"></span>Hey Sebastian –</div>
-      <p class="freetext" contenteditable="true" id="note-to-sebastian">
-        Die BA ist jetzt offiziell angemeldet! Ich halte dich ab jetzt wöchentlich auf dem Laufenden. Diese erste Woche habe ich vor allem die Grundstruktur gelegt – Quellen gesammelt, Kapitelstruktur erstellt und das Dokument formatiert. Freue mich auf die nächsten Wochen!
-      </p>
+      <p class="freetext" contenteditable="true" id="note-to-sebastian"></p>
     </div>
 
     <div class="action-row admin-only">
@@ -160,7 +144,7 @@
 
     <div class="footer">
       <div class="footer-l">
-        [Dein Name] · Hochschule Kempten<br>
+        Julian Gürtner · 438465 · Hochschule Kempten<br>
         Betreuer: Sebastian Kern · Update <span id="update-num">#01</span>
       </div>
       <div class="footer-r">BA 2026</div>
@@ -265,11 +249,11 @@
     </div>
     <div class="card full">
       <div class="section-title"><span class="dot dot-p"></span>Diese Woche neben der BA</div>
-      <p class="freetext" contenteditable="true" id="personal-text" style="min-height:60px;">Was hast du diese Woche sonst noch gemacht?</p>
+      <p class="freetext" contenteditable="true" id="personal-text" style="min-height:60px;">Was hab ich diese Woche sonst noch gemacht?</p>
     </div>
     <div class="card full">
       <div class="section-title"><span class="dot dot-o"></span>Warum diese Woche weniger Output</div>
-      <p class="freetext" contenteditable="true" id="excuse-text" style="min-height:50px;">Falls eine Woche mal nicht so lief – hier kurz erklären warum.</p>
+      <p class="freetext" contenteditable="true" id="excuse-text" style="min-height:50px;">...</p>
     </div>
     <div class="card full">
       <div class="section-title"><span class="dot dot-g"></span>Aktuelle Motivation & Gedanken</div>
