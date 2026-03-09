@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BA Tracker – Adaptive Soundscapes</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ==================== LOGIN ==================== -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-brand"><span class="live-dot"></span>BA TRACKER</div>
+    <div class="login-title">Adaptive Soundscapes<br><span>zwischen Spiel & Realität</span></div>
+    <div class="login-sub">Sebastian Kern · Hochschule Kempten<br>Wähle deinen Zugang</div>
+
+    <div class="login-modes" id="mode-select">
+      <div class="mode-card viewer-card" onclick="enterApp('viewer')">
+        <div class="mode-icon">👁</div>
+        <div class="mode-name">Zuschauer</div>
+        <div class="mode-desc">Alles lesen, nichts bearbeiten. Für Sebastian.</div>
+      </div>
+      <div class="mode-card admin-card" onclick="selectMode('admin')">
+        <div class="mode-icon">🔐</div>
+        <div class="mode-name">Admin</div>
+        <div class="mode-desc">Bearbeiten, eintragen, archivieren. Nur für dich.</div>
+      </div>
+    </div>
+
+    <div class="pin-area" id="pin-area">
+      <div class="pin-label">Admin-PIN eingeben</div>
+      <input type="password" class="pin-input" id="pin-input" maxlength="6"
+        placeholder="· · · · · ·" onkeydown="if(event.key==='Enter')checkPin()">
+      <div class="pin-error" id="pin-error">Falscher PIN. Versuch's nochmal.</div>
+      <div class="pin-btns">
+        <button class="btn-primary" onclick="checkPin()">Einloggen</button>
+        <button class="btn-sec" onclick="cancelPin()">Zurück</button>
+      </div>
+      <div class="pin-hint">Standard-PIN: 1234</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Gespeichert ✓</div>
+
+<!-- ==================== APP ==================== -->
+<div id="app">
+
+  <nav class="nav">
+    <div class="nav-brand"><span class="live-dot"></span>BA TRACKER</div>
+    <div class="nav-center">
+      <button class="nav-tab active" onclick="showPage('current',this)">Aktuell</button>
+      <button class="nav-tab" onclick="showPage('graph',this)">Mood Graph</button>
+      <button class="nav-tab" onclick="showPage('backlog',this)">Backlog</button>
+      <button class="nav-tab" onclick="showPage('personal',this)">Persönliches</button>
+    </div>
+    <div class="nav-right">
+      <div class="mode-badge" id="mode-badge">–</div>
+      <button class="logout-btn" onclick="logout()">← Abmelden</button>
+    </div>
+  </nav>
+
+  <!-- PAGE: CURRENT -->
+  <div class="page active" id="page-current">
+    <div class="hero">
+      <div>
+        <div class="hero-tag"><span class="live-dot"></span>Wöchentliches Update</div>
+        <h1>Adaptive Soundscapes zwischen<br><span class="hl">Spiel und Realität</span></h1>
+        <div class="hero-meta">
+          Betreuer: Sebastian Kern · Hochschule Kempten<br>
+          Anmeldung: 06.03.2026 · Geplante Abgabe: 06.08.2026
+        </div>
+      </div>
+      <div class="week-display">
+        <div class="week-num" id="week-display">W01</div>
+        <div class="week-sub" id="week-of">von ~22</div>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-head">
+        <span class="progress-label">Gesamtfortschritt</span>
+        <span class="progress-val" id="progress-display">7%</span>
+      </div>
+      <div class="pbar-outer"><div class="pbar-inner" id="pbar" style="width:7%"></div></div>
+      <div class="timeline-labels">
+        <span>Start</span><span>Exposé</span><span>Grundlagen</span><span>Prototyp</span><span>Schreiben</span><span>Abgabe</span>
+      </div>
+      <div class="slider-row admin-only">
+        <label>Anpassen:</label>
+        <input type="range" min="0" max="100" value="7" id="progress-slider" oninput="updateProgress(this.value)">
+        <span id="slider-label">7%</span>
+      </div>
+    </div>
+
+    <div class="countdown-row">
+      <div class="cd-card"><span class="cd-num" id="cd-weeks">–</span><span class="cd-unit">Wochen</span></div>
+      <div class="cd-card"><span class="cd-num" id="cd-days">–</span><span class="cd-unit">Tage</span></div>
+      <div class="cd-card"><span class="cd-num" id="cd-work">–</span><span class="cd-unit">Arbeitstage</span></div>
+      <div class="cd-card"><span class="cd-num">1</span><span class="cd-unit">Abschluss</span></div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="section-title"><span class="dot dot-g"></span>Diese Woche erledigt</div>
+        <ul class="checklist" id="done-list">
+          <li data-state="done"><span class="chk done" onclick="toggleCheck(this)"></span><span contenteditable="true">Erste Quellen gesammelt</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
+          <li data-state="done"><span class="chk done" onclick="toggleCheck(this)"></span><span contenteditable="true">Einleitung begonnen</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
+          <li data-state="done"><span class="chk done" onclick="toggleCheck(this)"></span><span contenteditable="true">Kapitel-Layout & Inhaltsverzeichnis erstellt</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
+          <li data-state="done"><span class="chk done" onclick="toggleCheck(this)"></span><span contenteditable="true">Word-Dokument formatiert</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
+          <li data-state="partial"><span class="chk partial" onclick="toggleCheck(this)"></span><span contenteditable="true">Inhaltsverzeichnis (wird noch überarbeitet)</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
+        </ul>
+        <button class="add-item admin-btn" onclick="addDoneItem()">+ Erledigtes hinzufügen</button>
+      </div>
+      <div class="card">
+        <div class="section-title"><span class="dot dot-b"></span>Nächste Schritte</div>
+        <ul class="steps" id="next-list">
+          <li><span class="snum">01</span><span contenteditable="true">Gliederung mit Sebastian abstimmen</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
+          <li><span class="snum">02</span><span contenteditable="true">Kernliteratur zu adaptivem Audio sichten</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
+          <li><span class="snum">03</span><span contenteditable="true">Wwise-Prototyp: Konzeptarchitektur skizzieren</span><button class="delete-item admin-btn" onclick="removeItem(this)">✕</button></li>
+        </ul>
+        <button class="add-item admin-btn" onclick="addNextItem()">+ Schritt hinzufügen</button>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="section-title"><span class="dot dot-o"></span>Offene Fragen & Probleme</div>
+        <div id="issues-list">
+          <div class="issue" contenteditable="true">Abgrenzung "öffentlicher Raum" – soziologisch oder architektonisch?</div>
+        </div>
+        <button class="add-item admin-btn" onclick="addIssue()">+ Frage hinzufügen</button>
+      </div>
+      <div class="card">
+        <div class="section-title"><span class="dot dot-b"></span>Literatur diese Woche</div>
+        <div id="sources-list">
+          <div class="src"><span class="src-n">[1]</span><span contenteditable="true">Collins, K. (2008). Game Sound. MIT Press.</span></div>
+          <div class="src"><span class="src-n">[2]</span><span contenteditable="true">Farnell, A. (2010). Designing Sound. MIT Press.</span></div>
+        </div>
+        <button class="add-item admin-btn" onclick="addSource()">+ Quelle hinzufügen</button>
+      </div>
+    </div>
+
+    <div class="card full">
+      <div class="section-title"><span class="dot dot-b"></span>Hey Sebastian –</div>
+      <p class="freetext" contenteditable="true" id="note-to-sebastian">
+        Die BA ist jetzt offiziell angemeldet! Ich halte dich ab jetzt wöchentlich auf dem Laufenden. Diese erste Woche habe ich vor allem die Grundstruktur gelegt – Quellen gesammelt, Kapitelstruktur erstellt und das Dokument formatiert. Freue mich auf die nächsten Wochen!
+      </p>
+    </div>
+
+    <div class="action-row admin-only">
+      <button class="save-btn" onclick="saveData()">💾 Speichern</button>
+      <button class="save-btn secondary" onclick="archiveWeek()">📁 Woche archivieren</button>
+    </div>
+
+    <div class="waveform" id="waveform"></div>
+
+    <div class="footer">
+      <div class="footer-l">
+        [Dein Name] · Hochschule Kempten<br>
+        Betreuer: Sebastian Kern · Update <span id="update-num">#01</span>
+      </div>
+      <div class="footer-r">BA 2026</div>
+    </div>
+  </div>
+
+  <!-- PAGE: MOOD GRAPH -->
+  <div class="page" id="page-graph">
+    <div class="page-header">
+      <div class="hero-tag"><span class="live-dot"></span>Tägliche Werte</div>
+      <h1>Mood <span class="hl">Graph</span></h1>
+    </div>
+
+    <div class="mood-form admin-only" id="mood-form-wrap">
+      <div class="section-title"><span class="dot dot-p"></span>Heutigen Eintrag erfassen</div>
+      <div class="sliders-grid">
+        <div class="slider-group">
+          <label>Stresslevel <span class="s-stress" id="lbl-stress">5</span></label>
+          <input type="range" class="mood-slider" id="sl-stress" min="1" max="10" value="5"
+            oninput="document.getElementById('lbl-stress').textContent=this.value">
+        </div>
+        <div class="slider-group">
+          <label>Gesundheit <span class="s-health" id="lbl-health">5</span></label>
+          <input type="range" class="mood-slider" id="sl-health" min="1" max="10" value="5"
+            oninput="document.getElementById('lbl-health').textContent=this.value">
+        </div>
+        <div class="slider-group">
+          <label>Motivation <span class="s-motivation" id="lbl-motivation">5</span></label>
+          <input type="range" class="mood-slider" id="sl-motivation" min="1" max="10" value="5"
+            oninput="document.getElementById('lbl-motivation').textContent=this.value">
+        </div>
+        <div class="slider-group">
+          <label>Gesamt-Gefühl <span class="s-overall" id="lbl-overall">5</span></label>
+          <input type="range" class="mood-slider" id="sl-overall" min="1" max="10" value="5"
+            oninput="document.getElementById('lbl-overall').textContent=this.value">
+        </div>
+      </div>
+      <textarea class="mood-note-input" id="mood-note-input" rows="2"
+        placeholder="Kurze Notiz zum Tag (optional)..."></textarea>
+      <button class="save-btn" onclick="saveMoodEntry()">✓ Eintrag speichern</button>
+    </div>
+
+    <div class="card full">
+      <div class="section-title"><span class="dot dot-p"></span>Verlauf</div>
+      <div class="graph-controls">
+        <button class="filter-btn active" data-key="stress" onclick="toggleFilter(this)">
+          <span class="fbdot" style="background:var(--c-stress)"></span>Stresslevel
+        </button>
+        <button class="filter-btn active" data-key="health" onclick="toggleFilter(this)">
+          <span class="fbdot" style="background:var(--c-health)"></span>Gesundheit
+        </button>
+        <button class="filter-btn active" data-key="motivation" onclick="toggleFilter(this)">
+          <span class="fbdot" style="background:var(--c-motivation)"></span>Motivation
+        </button>
+        <button class="filter-btn active" data-key="overall" onclick="toggleFilter(this)">
+          <span class="fbdot" style="background:var(--c-overall)"></span>Gesamt-Gefühl
+        </button>
+      </div>
+      <div class="graph-wrap">
+        <canvas id="moodCanvas"></canvas>
+      </div>
+    </div>
+
+    <div class="card full">
+      <div class="section-title"><span class="dot dot-p"></span>Eintragslog</div>
+      <div class="mood-table-wrap">
+        <table class="mood-table">
+          <thead>
+            <tr>
+              <th>Datum</th>
+              <th style="text-align:center;color:var(--c-stress)">Stress</th>
+              <th style="text-align:center;color:var(--c-health)">Gesundheit</th>
+              <th style="text-align:center;color:var(--c-motivation)">Motivation</th>
+              <th style="text-align:center;color:var(--c-overall)">Gesamt</th>
+              <th>Notiz</th>
+            </tr>
+          </thead>
+          <tbody id="mood-table-body">
+            <tr><td colspan="6" style="text-align:center;color:var(--text-dim);padding:20px;">Noch keine Einträge</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: BACKLOG -->
+  <div class="page" id="page-backlog">
+    <div class="page-header">
+      <div class="hero-tag"><span class="live-dot"></span>Archiv</div>
+      <h1>Vergangene <span class="hl">Wochen</span></h1>
+    </div>
+    <div id="backlog-list">
+      <div class="empty-state">Noch keine archivierten Wochen.<br>Archiviere eine Woche auf der Hauptseite.</div>
+    </div>
+  </div>
+
+  <!-- PAGE: PERSONAL -->
+  <div class="page" id="page-personal">
+    <div class="page-header">
+      <div class="hero-tag"><span class="live-dot"></span>Leben neben der BA</div>
+      <h1>Was noch so <span class="hl">passiert</span></h1>
+    </div>
+    <div class="card full">
+      <div class="section-title"><span class="dot dot-p"></span>Diese Woche neben der BA</div>
+      <p class="freetext" contenteditable="true" id="personal-text" style="min-height:60px;">Was hast du diese Woche sonst noch gemacht?</p>
+    </div>
+    <div class="card full">
+      <div class="section-title"><span class="dot dot-o"></span>Warum diese Woche weniger Output</div>
+      <p class="freetext" contenteditable="true" id="excuse-text" style="min-height:50px;">Falls eine Woche mal nicht so lief – hier kurz erklären warum.</p>
+    </div>
+    <div class="card full">
+      <div class="section-title"><span class="dot dot-g"></span>Aktuelle Motivation & Gedanken</div>
+      <p class="freetext" contenteditable="true" id="motivation-text" style="min-height:50px;">Wie fühlt sich die Arbeit gerade an?</p>
+    </div>
+    <button class="save-btn admin-btn" onclick="savePersonal()">💾 Speichern</button>
+  </div>
+
+</div><!-- end #app -->
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
